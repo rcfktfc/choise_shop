@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация - Интернет-магазин</title>
+    <link rel="stylesheet" href="{% static 'reg/auth.css' %}">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-form-wrapper">
+            <h1 class="auth-title">Авторизация</h1>
+
+            <!-- Блок для отображения сообщений -->
+            {% if messages %}
+            <div class="messages-container">
+                {% for message in messages %}
+                <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form class="auth-form" method="post">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="name" class="form-label">Имя пользователя</label>
+                    <input type="text" id="name" name="username" class="form-input" placeholder="Введите ваше имя" required value="{{ form.username.value|default:'' }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Пароль</label>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="Введите пароль" required>
+                </div>
+
+                <button type="submit" class="auth-button">Авторизироваться</button>
+            </form>
+
+            <div class="auth-links">
+                <a href="#" class="auth-link">Забыли пароль?</a>
+                <a href="{% url 'registration' %}" class="auth-link">Регистрация</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

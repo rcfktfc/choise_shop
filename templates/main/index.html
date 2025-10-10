@@ -1,0 +1,86 @@
+<!-- index.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Интернет-магазин</title>
+    <link rel="stylesheet" href="{% static 'main/main.css' %}">
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header class="header">
+        <nav class="header-nav">
+            <a href="#" class="nav-link">Главная</a>
+            <a href="#" class="nav-link">Корзина</a>
+            <a href="#" class="nav-link">Профиль</a>
+            <a href="#" class="nav-link">Настройки</a>
+            <a href="#" class="nav-link">Выход</a>
+        </nav>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="main-content">
+        <div class="products-container">
+            <!-- Товар 1 -->
+            <div class="product-card">
+                <img src="{% static 'images/product1.jpg' %}" alt="Товар 1" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Название товара 1</h3>
+                    <p class="product-description">Краткое описание товара 1</p>
+                </div>
+            </div>
+            <!-- Товар 2 -->
+            <div class="product-card">
+                <img src="{% static 'images/product2.jpg' %}" alt="Товар 2" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Название товара 2</h3>
+                    <p class="product-description">Краткое описание товара 2</p>
+                </div>
+            </div>
+            <!-- Товар 3 -->
+            <div class="product-card">
+                <img src="{% static 'images/product3.jpg' %}" alt="Товар 3" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Название товара 3</h3>
+                    <p class="product-description">Краткое описание товара 3</p>
+                </div>
+            </div>
+            <!-- Добавьте еще 6 товаров для 3 строк -->
+        </div>
+        <div class="products-container">
+            <!-- Товар 4 -->
+            <div class="product-card">
+                <img src="{% static 'images/product1.jpg' %}" alt="Товар 4" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Название товара 4</h3>
+                    <p class="product-description">Краткое описание товара 4</p>
+                </div>
+            </div>
+            <!-- Товар 5 -->
+            <div class="product-card">
+                <img src="{% static 'images/product2.jpg' %}" alt="Товар 5" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Название товара 5</h3>
+                    <p class="product-description">Краткое описание товара 5</p>
+                </div>
+            </div>
+            <!-- Товар 6 -->
+            <div class="product-card">
+                <img src="{% static 'images/product3.jpg' %}" alt="Товар 6" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Название товара 6</h3>
+                    <p class="product-description">Краткое описание товара 6</p>
+                </div>
+            </div>
+            <!-- Добавьте еще 6 товаров для 3 строк -->
+        </div>
+
+    </main>
+
+    <!-- Подвал сайта -->
+    <footer class="footer">
+        <p class="footer-text">© 2025 Интернет-магазин. Все права защищены.</p>
+    </footer>
+</body>
+</html>
