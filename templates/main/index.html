@@ -1,4 +1,3 @@
-<!-- index.html -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="ru">
@@ -6,12 +5,28 @@
     <meta charset="UTF-8">
     <title>Интернет-магазин</title>
     <link rel="stylesheet" href="{% static 'main/main.css' %}">
+    <style>
+        .search-space {
+            height: 300px !important;
+            min-height: 300px !important;
+            padding: 150px 0 !important;
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .search-input:focus {
+            outline: none !important;
+            border-color: #666 !important;
+            box-shadow: 0 0 0 2px rgba(102, 102, 102, 0.2) !important;
+        }
+    </style>
 </head>
 <body>
-    <!-- Шапка сайта -->
     <header class="header">
         <nav class="header-nav">
-            <a href="#" class="nav-link">Главная</a>
+            <a href="" class="nav-link">Главная</a>
             <a href="#" class="nav-link">Корзина</a>
             <a href="#" class="nav-link">Профиль</a>
             <a href="#" class="nav-link">Настройки</a>
@@ -19,66 +34,36 @@
         </nav>
     </header>
 
-    <!-- Основной контент -->
+    <div class="search-space" style="height: 300px; min-height: 300px; padding: 150px 0; background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); display: flex; align-items: center; justify-content: center;">
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Поиск товаров..." style="border: 1px solid #444; padding: 1rem; border-radius: 6px; background: #1a1a1a; color: #e0e0e0; font-size: 1rem; margin-top: 220px">
+            <button class="search-button" style="background: linear-gradient(135deg, #3d3d3d 0%, #2d2d2d 100%); color: #e0e0e0; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 5px; padding: 0.9rem; font-size: 0.9rem; font-weight: 600; margin-top: 220px">Найти</button>
+        </div>
+    </div>
+
     <main class="main-content">
         <div class="products-container">
-            <!-- Товар 1 -->
+            {% for product in products %}
             <div class="product-card">
-                <img src="{% static 'images/product1.jpg' %}" alt="Товар 1" class="product-image">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                {% else %}
+                    <img src="{% static 'images/placeholder.jpg' %}" alt="Нет изображения" class="product-image">
+                {% endif %}
                 <div class="product-info">
-                    <h3 class="product-title">Название товара 1</h3>
-                    <p class="product-description">Краткое описание товара 1</p>
+                    <h3 class="product-title">{{ product.name }}</h3>
+                    <p class="product-description">{{ product.description }}</p>
+                    <div class="product-price">{{ product.price }} ₽</div>
                 </div>
             </div>
-            <!-- Товар 2 -->
-            <div class="product-card">
-                <img src="{% static 'images/product2.jpg' %}" alt="Товар 2" class="product-image">
-                <div class="product-info">
-                    <h3 class="product-title">Название товара 2</h3>
-                    <p class="product-description">Краткое описание товара 2</p>
-                </div>
+            {% empty %}
+            <div class="no-products">
+                Товаров пока нет в каталоге
             </div>
-            <!-- Товар 3 -->
-            <div class="product-card">
-                <img src="{% static 'images/product3.jpg' %}" alt="Товар 3" class="product-image">
-                <div class="product-info">
-                    <h3 class="product-title">Название товара 3</h3>
-                    <p class="product-description">Краткое описание товара 3</p>
-                </div>
-            </div>
-            <!-- Добавьте еще 6 товаров для 3 строк -->
+            {% endfor %}
         </div>
-        <div class="products-container">
-            <!-- Товар 4 -->
-            <div class="product-card">
-                <img src="{% static 'images/product1.jpg' %}" alt="Товар 4" class="product-image">
-                <div class="product-info">
-                    <h3 class="product-title">Название товара 4</h3>
-                    <p class="product-description">Краткое описание товара 4</p>
-                </div>
-            </div>
-            <!-- Товар 5 -->
-            <div class="product-card">
-                <img src="{% static 'images/product2.jpg' %}" alt="Товар 5" class="product-image">
-                <div class="product-info">
-                    <h3 class="product-title">Название товара 5</h3>
-                    <p class="product-description">Краткое описание товара 5</p>
-                </div>
-            </div>
-            <!-- Товар 6 -->
-            <div class="product-card">
-                <img src="{% static 'images/product3.jpg' %}" alt="Товар 6" class="product-image">
-                <div class="product-info">
-                    <h3 class="product-title">Название товара 6</h3>
-                    <p class="product-description">Краткое описание товара 6</p>
-                </div>
-            </div>
-            <!-- Добавьте еще 6 товаров для 3 строк -->
-        </div>
-
     </main>
 
-    <!-- Подвал сайта -->
     <footer class="footer">
         <p class="footer-text">© 2025 Интернет-магазин. Все права защищены.</p>
     </footer>
