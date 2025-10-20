@@ -3,41 +3,40 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Интернет-магазин</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="{% static 'main/main.css' %}">
-    <style>
-        .search-space {
-            height: 300px !important;
-            min-height: 300px !important;
-            padding: 150px 0 !important;
-            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%) !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-        }
 
-        .search-input:focus {
-            outline: none !important;
-            border-color: #666 !important;
-            box-shadow: 0 0 0 2px rgba(102, 102, 102, 0.2) !important;
-        }
-    </style>
 </head>
 <body>
     <header class="header">
         <nav class="header-nav">
-            <a href="" class="nav-link">Главная</a>
-            <a href="#" class="nav-link">Корзина</a>
-            <a href="#" class="nav-link">Профиль</a>
-            <a href="#" class="nav-link">Настройки</a>
-            <a href="#" class="nav-link">Выход</a>
+            <a href="{% url 'index' %}" class="nav-link">Главная</a>
+        <a href="{% url 'basket:basket_view' %}" class="nav-link">
+                Корзина
+                {% if user.is_authenticated %}
+                <span class="basket-count" id="basketCount">
+                    {{ user.basket_set.count }}
+                </span>
+                {% endif %}
+            </a>
+            {% if user.is_authenticated %}
+                <a href="#" class="nav-link">Профиль ({{ user.username }})</a>
+                <a href="#" class="nav-link">Настройки</a>
+                <a href="" class="nav-link">Выход</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="nav-link">Войти</a>
+                <a href="{% url 'register' %}" class="nav-link">Регистрация</a>
+            {% endif %}
         </nav>
     </header>
 
-    <div class="search-space" style="height: 300px; min-height: 300px; padding: 150px 0; background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); display: flex; align-items: center; justify-content: center;">
+    <div class="search-space">
         <div class="search-container">
-            <input type="text" class="search-input" placeholder="Поиск товаров..." style="border: 1px solid #444; padding: 1rem; border-radius: 6px; background: #1a1a1a; color: #e0e0e0; font-size: 1rem; margin-top: 220px">
-            <button class="search-button" style="background: linear-gradient(135deg, #3d3d3d 0%, #2d2d2d 100%); color: #e0e0e0; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 5px; padding: 0.9rem; font-size: 0.9rem; font-weight: 600; margin-top: 220px">Найти</button>
+            <input type="text" class="search-input" placeholder="Поиск товаров...">
+            <button class="search-button">Найти</button>
         </div>
     </div>
 
@@ -54,6 +53,10 @@
                     <h3 class="product-title">{{ product.name }}</h3>
                     <p class="product-description">{{ product.description }}</p>
                     <div class="product-price">{{ product.price }} ₽</div>
+                    <button class="add-to-cart-btn" onclick="addToBasket({{ product.id }})"
+                            {% if not user.is_authenticated %}disabled title="Войдите для добавления в корзину"{% endif %}>
+                        В корзину
+                    </button>
                 </div>
             </div>
             {% empty %}
@@ -64,8 +67,59 @@
         </div>
     </main>
 
+    <div class="notification" id="notification"></div>
+
     <footer class="footer">
         <p class="footer-text">© 2025 Интернет-магазин. Все права защищены.</p>
     </footer>
+
+    <script>
+        function addToBasket(productId) {
+            const btn = event.target;
+            const originalText = btn.textContent;
+
+            btn.disabled = true;
+            btn.textContent = 'Добавляем...';
+
+            const formData = new FormData();
+            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+            fetch(`/basket/add/${productId}/`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification(data.message);
+                    const basketCount = document.getElementById('basketCount');
+                    if (basketCount) {
+                        basketCount.textContent = data.basket_count;
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Ошибка при добавлении товара');
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.textContent = originalText;
+            });
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
 </body>
 </html>
