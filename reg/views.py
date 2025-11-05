@@ -12,7 +12,7 @@ def registration(request):
     """
     # Если пользователь уже авторизован, перенаправляем на главную
     if request.user.is_authenticated:
-        return redirect('/')  # Замените 'home' на ваш URL главной страницы
+        return redirect('/')
 
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
@@ -40,7 +40,7 @@ def reg(request):
     """
     # Если пользователь уже авторизован, перенаправляем на главную
     if request.user.is_authenticated:
-        return redirect('/')  # Замените 'home' на ваш URL главной страницы
+        return redirect('/')
 
     if request.method == 'POST':
         form = UserLoginForm(request, data=request.POST)
